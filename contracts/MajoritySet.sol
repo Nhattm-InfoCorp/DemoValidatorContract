@@ -48,7 +48,7 @@ contract MajoritySet is ValidatorSet {
 
 	// System address, used by the block sealer.
 	address constant SYSTEM_ADDRESS = 0xfffffffffffffffffffffffffffffffffffffffe;
-// 	address constant SYSTEM_ADDRESS = 0xA328d644D1C45E9c6ebC892b3fEa9DA7937e71DC;
+// 	address constant SYSTEM_ADDRESS = 0xca35b7d915458ef540ade6068dfe2f44e8fa733c;
 	// Support can not be added once this number of validators is reached.
 	uint public constant MAX_VALIDATORS = 30;
 	// Time after which the validators will report a validator as malicious.
@@ -73,8 +73,8 @@ contract MajoritySet is ValidatorSet {
 	// Each validator is initially supported by all others.
 	function MajoritySet() public {
 	    
-	    pendingList.push(0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c);
-// 		pendingList.push(0xA328d644D1C45E9c6ebC892b3fEa9DA7937e71DC);
+	   // pendingList.push(0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c);
+		pendingList.push(0xA328d644D1C45E9c6ebC892b3fEa9DA7937e71DC);
 // 		pendingList.push(0x4B0897b0513fdC7C541B6d9D7E929C4e5364D2dB);
 // 		pendingList.push(0x583031D1113aD414F02576BD6afaBfb302140225);
 
@@ -115,8 +115,8 @@ contract MajoritySet is ValidatorSet {
 	// SUPPORT LOOKUP AND MANIPULATION
 
 	// Find the total support for a given address.
-	function getSupport(address validator) public constant returns (address[]) {
-		return AddressVotes.get(validatorsStatus[validator].support);
+	function getSupport(address validator) public constant returns (uint) {
+		return AddressVotes.count(validatorsStatus[validator].support);
 	}
 
 	function getSupported(address validator) public constant returns (address[]) {
@@ -241,7 +241,7 @@ contract MajoritySet is ValidatorSet {
 	// MODIFIERS
 
 	function highSupport(address validator) public constant returns (bool) {
-		return getSupport(validator).length > pendingList.length/2;
+		return getSupport(validator) > pendingList.length/2;
 	}
 
 	function firstBenignReported(address reporter, address validator) public constant returns (uint) {
